@@ -7,12 +7,12 @@
           inputWeek : 0
         },
         beforeCreate: function () {
-          fetch("/teams.json")//.then(res => res.text()).then(text=>console.log(text))
+          fetch("teams.json")//.then(res => res.text()).then(text=>console.log(text))
             .then(res => res.json())
             .then(json => {
               this.ffteams=json.ffteams;
             })
-          fetch("/players.json")//.then(res => res.text()).then(text=>console.log(text))
+          fetch("players.json")//.then(res => res.text()).then(text=>console.log(text))
             .then(r => r.json())
             .then(json => {
               this.players=json.players;
