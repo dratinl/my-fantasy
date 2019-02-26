@@ -17,8 +17,8 @@
       <div class="container">
         <div class="page-header">
           <!-- Team selection -->
-          <select v-model="selectedTeam" style="left:0">
-            <h4>Who are you?</h4>
+          <h4>Who are you?</h4>
+          <select v-model="selectedTeam">
             <option v-for="team in ffteams" v-bind:value="team.team_name">{{team.name}}</option>
           </select>
         </div>
@@ -26,17 +26,16 @@
 
       <!-- Roster info -->
       <div class="col-sm-3" style="left: 0; position: absolute;">
-        <br><span style="text-align: center; left: 50%;">{{ selectedTeam }}</span><br>
+        <h4 style="text-align: center">{{ selectedTeam }}</h4>
         <select v-model="inputWeek" style="left: 50%;">
           <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
         </select>
         <div v-for="player in players">
           <div v-if="player.ffteam ===  selectedTeam">
             <div style="border-style: solid">
-              <h3 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h3>
-              <h4 v-if="player.role === 'Jungler'">{{player.role}}</h4>
-              <h4 v-else>{{player.role}} laner</h4>
-              <h5>Week {{inputWeek+1}} Stats:</h5>
+              <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
+              <h3 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h3>
+              <h3 style="text-align: center;" v-else>{{player.role}} laner</h3>
               <div class="row">
                 <span class="col-sm-6" >
                   Day 1 <br>
