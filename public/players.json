@@ -592,8 +592,8 @@
         },
         {
             "name":"TF blade",
-            "ffteam":"no one",
-            "lcsteam":null,
+            "ffteam":false,
+            "lcsteam":"TL",
             "role":"Coach",
             "stats":{
                 "kills":[
@@ -1536,8 +1536,8 @@
         },
         {
             "name":"Blaber",
-            "ffteam":"no one",
-            "lcsteam":null,
+            "ffteam":false,
+            "lcsteam":"C9",
             "role":"Jungler",
             "stats":{
                 "kills":[
@@ -1654,8 +1654,8 @@
         },
         {
             "name":"Goldenglue",
-            "ffteam":"no one",
-            "lcsteam":null,
+            "ffteam":false,
+            "lcsteam":"C9",
             "role":"Mid",
             "stats":{
                 "kills":[
@@ -2244,7 +2244,7 @@
         },
         {
             "name":"Lira",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CG",
             "role":"Jungler",
             "stats":{
@@ -2598,7 +2598,7 @@
         },
         {
             "name":"Vulcan",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CG",
             "role":"Support",
             "stats":{
@@ -2716,7 +2716,7 @@
         },
         {
             "name":"Darshan",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CLG",
             "role":"Top",
             "stats":{
@@ -2834,7 +2834,7 @@
         },
         {
             "name":"FallenBandit",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CLG",
             "role":"Top",
             "stats":{
@@ -2952,7 +2952,7 @@
         },
         {
             "name":"Moon",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CLG",
             "role":"Jungler",
             "stats":{
@@ -3070,7 +3070,7 @@
         },
         {
             "name":"Wiggily",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CLG",
             "role":"Jungler",
             "stats":{
@@ -3424,7 +3424,7 @@
         },
         {
             "name":"Biofrost",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"CLG",
             "role":"Support",
             "stats":{
@@ -3542,7 +3542,7 @@
         },
         {
             "name":"Solo",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"FOX",
             "role":"Top",
             "stats":{
@@ -4014,7 +4014,7 @@
         },
         {
             "name":"Hakuho",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"FOX",
             "role":"Support",
             "stats":{
@@ -4840,7 +4840,7 @@
         },
         {
             "name":"Contractz",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"GGS",
             "role":"Jungler",
             "stats":{
@@ -4958,7 +4958,7 @@
         },
         {
             "name":"Froggen",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"GGS",
             "role":"Mid",
             "stats":{
@@ -5076,7 +5076,7 @@
         },
         {
             "name":"deftly",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"GGS",
             "role":"Bot",
             "stats":{
@@ -5194,7 +5194,7 @@
         },
         {
             "name":"Olleh",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"GGS",
             "role":"Support",
             "stats":{
@@ -5312,7 +5312,7 @@
         },
         {
             "name":"Allorim",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Top",
             "stats":{
@@ -5430,7 +5430,7 @@
         },
         {
             "name":"Dhokla",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Top",
             "stats":{
@@ -5548,7 +5548,7 @@
         },
         {
             "name":"Dardoch",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Jungler",
             "stats":{
@@ -5666,7 +5666,7 @@
         },
         {
             "name":"Meteos",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Jungler",
             "stats":{
@@ -6020,7 +6020,7 @@
         },
         {
             "name":"Asta",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Bot",
             "stats":{
@@ -6138,7 +6138,7 @@
         },
         {
             "name":"BIG",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Support",
             "stats":{
@@ -6256,7 +6256,7 @@
         },
         {
             "name":"Gate",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"OPT",
             "role":"Support",
             "stats":{
@@ -6492,7 +6492,7 @@
         },
         {
             "name":"Akaadian",
-            "ffteam":"no one",
+            "ffteam":false,
             "lcsteam":"TSM",
             "role":"Jungler",
             "stats":{
