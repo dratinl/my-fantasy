@@ -13,72 +13,28 @@
     </noscript>
 
     <div id="app1">
-      <div class="container">
-        <div class="page-header">
-          <!-- Team selection -->
-          <h4>Who are you?</h4>
-          <select v-model="selectedTeam">
-            <option v-for="team in ffteams" v-bind:value="team.team_name">{{team.name}}</option>
+      <div class="container" v-show="!selectedTeam" style="margins: auto auto; text-align:center">
+
+        <!-- Team selection -->
+        <h1>Who are you?</h1>
+        <select v-model="selectedTeam" style="margins: auto auto">
+          <option style="display:none" disabled selected value> select a team </option>
+          <option v-for="team in ffteams" v-bind:value="team.team_name">{{team.name}}</option>
+        </select>
+
+      </div>
+      <span v-show="selectedTeam">
+        <!-- Roster info -->
+        <div class="col-sm-3" style="left: 0; position: absolute;">
+          <h3 style="text-align: center">Team {{ selectedTeam }}</h3>
+          <select v-model="inputWeek" style="margin: auto auto; display: block">
+            <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
           </select>
-        </div>
-      </div>
-
-      <!-- Roster info -->
-      <div class="col-sm-3" style="left: 0; position: absolute;">
-        <h3 style="text-align: center">Team {{ selectedTeam }}'s Roster</h3>
-        <select v-model="inputWeek" style="margin: auto auto; display: block">
-          <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
-        </select>
-        <div v-for="player in players">
-          <div v-if="player.ffteam ===  selectedTeam">
-            <div style="border-style: solid; margin: 10%">
-              <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
-              <h5 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h5>
-              <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
-              <div class="row" style="margin: 2%">
-                <span class="col-sm-6" >
-                  Day 1 <br>
-                  KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
-                  CS: {{ player.stats.cs[inputWeek*2] }}<br>
-                  Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
-                </span>
-                <span class="col-sm-6">
-                  Day 2 <br>
-                  KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
-                  CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
-                  Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
-                </span>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Standings -->
-      <div class="col-sm-3">
-        <h2></h2>
-      </div>
-
-      <!-- Available Players -->
-      <div class="col-sm-4" style="right: 0; position: absolute;">
-
-        <h3 style="text-align:center">Available Players</h3>
-        <select v-model="inputRole" style="margin: auto auto; display: block">
-          <option>All</option>
-          <option>Top</option>
-          <option>Jungler</option>
-          <option>Mid</option>
-          <option>Bot</option>
-          <option>Sup</option>
-        </select>
-
-        <div v-for="player in players" >
-
-          <div v-if="inputRole === player.role || inputRole === 'All'" >
-            <span v-show="!player.ffteam">
-              <div style="border-style:solid; margin: 10%">
+          <div v-for="player in players">
+            <div v-if="player.ffteam ===  selectedTeam">
+              <div style="border-style: solid; margin: 10%">
                 <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
-                <h5 style="text-align: center;" v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
+                <h5 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h5>
                 <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
                 <div class="row" style="margin: 2%">
                   <span class="col-sm-6" >
@@ -94,32 +50,57 @@
                     Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
                   </span>
                 </div>
-              </div>
-            </span>
 
+              </div>
+            </div>
           </div>
-          <!--<div v-else>
-            <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
-            <h5 style="text-align: center;" v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
-            <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
-            <div class="row" style="margin: 2%">
-              <span class="col-sm-6" >
-                Day 1 <br>
-                KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
-                CS: {{ player.stats.cs[inputWeek*2] }}<br>
-                Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
-              </span>
-              <span class="col-sm-6">
-                Day 2 <br>
-                KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
-                CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
-                Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
+        </div>
+        <!-- Standings -->
+        <div class="col-sm-3">
+          <h2></h2>
+        </div>
+
+        <!-- Available Players -->
+        <div class="col-sm-4" style="right: 0; position: absolute;">
+
+          <h3 style="text-align:center">Available Players</h3>
+          <select v-model="inputRole" style="margin: auto auto; display: block">
+            <option>All</option>
+            <option>Top</option>
+            <option>Jungler</option>
+            <option>Mid</option>
+            <option>Bot</option>
+            <option>Sup</option>
+          </select>
+
+          <div v-for="player in players" >
+
+            <div v-if="inputRole === player.role || inputRole === 'All'" >
+              <span v-show="!player.ffteam">
+                <div style="border-style:solid; margin: 10%">
+                  <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
+                  <h5 style="text-align: center;" v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
+                  <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
+                  <div class="row" style="margin: 2%">
+                    <span class="col-sm-6" >
+                      Day 1 <br>
+                      KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
+                      CS: {{ player.stats.cs[inputWeek*2] }}<br>
+                      Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
+                    </span>
+                    <span class="col-sm-6">
+                      Day 2 <br>
+                      KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
+                      CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
+                      Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
+                    </span>
+                  </div>
+                </div>
               </span>
             </div>
-          </div>-->
-
+          </div>
         </div>
-      </div>
+      </span>
     </div>
     <!-- misc scripts -->
     <script src="https://unpkg.com/vue@2.4.2"></script>
@@ -133,7 +114,7 @@
         data: {
           players: [],
           ffteams: [],
-          selectedTeam: 'Yagami',
+          selectedTeam: null,
           inputWeek : 0,
           inputRole: 'All'
         },
