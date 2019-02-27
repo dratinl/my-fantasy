@@ -26,12 +26,12 @@
       <!-- Roster info -->
       <div class="col-sm-3" style="left: 0; position: absolute;">
         <h3 style="text-align: center">Team {{ selectedTeam }}'s Roster</h3>
-        <select v-model="inputWeek" style="left: 50%;">
+        <select v-model="inputWeek" style="margin: auto auto; display: block">
           <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
         </select>
         <div v-for="player in players">
           <div v-if="player.ffteam ===  selectedTeam">
-            <div style="border-style: solid">
+            <div style="border-style: solid; margin: 10%">
               <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
               <h5 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h5>
               <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
@@ -61,9 +61,9 @@
 
       <!-- Available Players -->
       <div class="col-sm-4" style="right: 0; position: absolute;">
-        <h2>Available Players</h2>
 
-        <select v-model="inputRole">
+        <h3 style="text-align:center">Available Players</h3>
+        <select v-model="inputRole" style="margin: auto auto; display: block">
           <option>All</option>
           <option>Top</option>
           <option>Jungler</option>
@@ -76,7 +76,7 @@
 
           <div v-if="inputRole === player.role || inputRole === 'All'" >
             <span v-show="!player.ffteam">
-              <div style="border-style:solid">
+              <div style="border-style:solid; margin: 10%">
                 <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
                 <h5 style="text-align: center;" v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
                 <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
