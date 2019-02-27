@@ -64,27 +64,26 @@
       <div class="col-sm-4" style="right: 0; position: absolute;">
         <h2>Available Players</h2>
         <div v-for="player in players" >
-          <div v-for="player in players">
-            <div v-if="player.ffteam ===  selectedTeam">
-              <div style="border-style: solid">
-                <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
-                <h5 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h5>
-                <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
-                <div class="row" style="margin: 2%">
-                  <span class="col-sm-6" >
-                    Day 1 <br>
-                    KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
-                  </span>
-                  <span class="col-sm-6">
-                    Day 2 <br>
-                    KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
-                  </span>
-                </div>
+          <div v-if="player.ffteam === 'no one'" style="border-style : solid">
+            <div style="border-style: solid">
+              <h4 style="text-align: center;">{{player.lcsteam}} {{ player.name }}</h4>
+              <h5 style="text-align: center;" v-if="player.role === 'Jungler'">{{player.role}}</h5>
+              <h5 style="text-align: center;" v-else>{{player.role}} laner</h5>
+              <div class="row" style="margin: 2%">
+                <span class="col-sm-6" >
+                  Day 1 <br>
+                  KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
+                  CS: {{ player.stats.cs[inputWeek*2] }}<br>
+                  Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
+                </span>
+                <span class="col-sm-6">
+                  Day 2 <br>
+                  KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
+                  CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
+                  Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
+                </span>
               </div>
+
             </div>
           </div>
         </div>
