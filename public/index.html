@@ -8,12 +8,59 @@
         width: 100%;
         overflow: auto;
         text-align: center;
+
+        font-size: 1.2em;
+        line-height: 1.6;
+        font-weight: 400;
+      }
+      div{
+        display: block;
+        box-sizing: border-box;
       }
       .col-sm-3{
         padding-bottom: 10%;
         height: 100%;
         width: 33%;
         float: none;
+      }
+      .SinglePlayerDetails{
+        padding-top: 10px;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        vertical-align: top;
+        border-bottom: 1px solid #e8e8e8;
+        text-align:left;
+        line-height: auto;
+        display: inline-block;
+      }
+      .PlayerDesc{
+        float: left;
+        width: 33%;       
+      }
+      .PlayerRole{
+        font-size: 12px;
+      }
+      .PlayerData{
+        text-align:left;
+        min-width: 50%;
+        float:right;
+        width: auto;
+        margin: 2px 10px 0;
+      }
+      .PlayerData * {
+        display: inline;
+      }
+      .ColumnLabel{
+        font-size: 10px;
+        line-height: 10px;
+        color: #666666;
+        font-weight: normal;
+        height: 10px;
+      }
+      .SingleCol{
+        text-align: left;
+        width:40px;
+        white-space: nowrap;
       }
 
     </style>
@@ -102,33 +149,64 @@
       </div>
 
       <div class="container" style="width: 100%; height: 100%; padding-top: 5%" v-show="selectedTeam">
-        <!-- Roster info -->
+        <!-- Roster information -->
         <div class="col-xs-6 col-sm-3 col-md-4" style="width:30%; clear: left; ">
-          <h3>Team {{ selectedTeam }}</h3>
-          <select v-model="inputWeek" style="margin: auto auto; display: block">
-            <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
-          </select>
+          <!-- Team information -->
+          <div class="container" style="width: 100%; border-bottom: 3px solid #e8e8e8">
+            <h3>Team {{ selectedTeam }}</h3>
+            <select v-model="inputWeek" style="margin: auto auto; display: block; ">
+              <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
+            </select>
+          </div>
           <div v-for="player in players" >
-              <div v-if="player.ffteam ===  selectedTeam" style="border-style: solid; margin: 10%">
-                <h4>{{player.lcsteam}} {{ player.name }}</h4>
-                <h5 v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
-                <h5 v-else>{{player.role}} Lane</h5>
-                <div class="row" style="margin: 2%">
-                  <span class="col-sm-6" >
-                    Day 1 <br>
-                    kda: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
-                  </span>
-                  <span class="col-sm-6">
-                    Day 2 <br>
-                    kda: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
-                  </span>
+            <div  v-show="player.ffteam ===  selectedTeam" style="border-bottom: 1px solid #e8e8e8;">
+              <div class="SinglePlayerDetails">
+                <div class="PlayerDesc">
+                  {{player.lcsteam}} {{ player.name }}
+                  <div class="PlayerRole">
+                    <p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p>
+                    <p v-else>{{player.role}} Lane</p>
+                  </div>
                 </div>
-                <h5>Score: {{ player.score[inputWeek] }}</h5>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">KDA</div>
+                    {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
+                  </div>
+
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">CS</div>
+                    {{ player.stats.cs[inputWeek*2] }}
+                  </div>
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Gold</div>
+                    {{ player.stats.gold[inputWeek*2] }}k
+                  </div>
+                </div>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">KDA</div>
+                    {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
+                  </div>
+
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">CS</div>
+                    {{ player.stats.cs[inputWeek*2 + 1] }}
+                  </div>
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Gold</div>
+                    {{ player.stats.gold[inputWeek*2 + 1] }}k
+                  </div>
+                </div>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Score</div>
+                    {{ player.score[inputWeek] }}
+                  </div>
+                </div>
+
               </div>
+            </div>
           </div>
         </div>
         <!--<div class="clearfix visible-xs"></div>-->
@@ -144,38 +222,66 @@
 
         <!-- Available Players -->
         <div class="col-xs-6 col-sm-3 col-md-4" style="width: 30%; float:right; clear: right;">
-
-          <h3>Available Players</h3>
-          <select v-model="inputRole" style="margin: auto auto; display: block">
-            <option>All</option>
-            <option>Top</option>
-            <option>Jungler</option>
-            <option>Mid</option>
-            <option>Bot</option>
-            <option>Sup</option>
-          </select>
-
+          <div class="container" style="width: 100%; border-bottom: 3px solid #e8e8e8">
+            <h3>Available Players</h3>
+            <select v-model="inputRole" style="margin: auto auto; display: block">
+              <option>All</option>
+              <option>Top</option>
+              <option>Jungler</option>
+              <option>Mid</option>
+              <option>Bot</option>
+              <option>Sup</option>
+            </select>
+          </div>
           <div v-for="player in players">
             <div v-if="inputRole === player.role || inputRole === 'All'">
-              <div v-show="player.ffteam === 'no one'" style="border-style:solid; margin: 10%">
-                <h4>{{player.lcsteam}} {{ player.name }}</h4>
-                <h5 v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</h5>
-                <h5 v-else>{{player.role}} Lane</h5>
-                <div class="row" style="margin: 2%">
-                  <span class="col-sm-6" >
-                    Day 1 <br>
-                    KDA: {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2] }}k<br>
-                  </span>
-                  <span class="col-sm-6">
-                    Day 2 <br>
-                    KDA: {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 +1] }}/{{ player.stats.assists[inputWeek*2 +1] }}<br>
-                    CS: {{ player.stats.cs[inputWeek*2 + 1] }}<br>
-                    Gold: {{ player.stats.gold[inputWeek*2 +1] }}k<br>
-                  </span>
+              <div v-show="player.ffteam === 'no one'" style="border-bottom: 1px solid #e8e8e8;">
+                <div class="SinglePlayerDetails">
+                <div class="PlayerDesc">
+                  {{player.lcsteam}} {{ player.name }}
+                  <div class="PlayerRole">
+                    <p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p>
+                    <p v-else>{{player.role}} Lane</p>
+                  </div>
                 </div>
-                <h5>Score: {{player.score[inputWeek] }}</h5>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">KDA</div>
+                    {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
+                  </div>
+
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">CS</div>
+                    {{ player.stats.cs[inputWeek*2] }}
+                  </div>
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Gold</div>
+                    {{ player.stats.gold[inputWeek*2] }}k
+                  </div>
+                </div>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">KDA</div>
+                    {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
+                  </div>
+
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">CS</div>
+                    {{ player.stats.cs[inputWeek*2 + 1] }}
+                  </div>
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Gold</div>
+                    {{ player.stats.gold[inputWeek*2 + 1] }}k
+                  </div>
+                </div>
+                <div class="PlayerData">
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Score</div>
+                    {{ player.score[inputWeek] }}
+                  </div>
+                </div>
+
+              </div>
               </div>
             </div>
           </div>
