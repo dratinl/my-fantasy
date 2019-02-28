@@ -18,7 +18,7 @@
     </style>
     <meta charset="utf-8">
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     
     <title>my-fantasy</title>
@@ -112,7 +112,7 @@
 
       <div class="container" style="width: 100%; height: 100%; padding-top: 5%" v-show="selectedTeam">
         <!-- Roster info -->
-        <div class="col-xs-6 col-sm-3 col-md-4" style="clear: left;">
+        <div class="col-sm-3" style="clear: left;">
           <h3>Team {{ selectedTeam }}</h3>
           <select v-model="inputWeek" style="margin: auto auto; display: block">
             <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
@@ -142,7 +142,7 @@
         </div>
         <div class="clearfix visible-xs"></div>
         <!-- Standings -->
-        <div class="col-xs-6 col-sm-3 col-md-4" style="border-style: solid;">
+        <div class="col-sm-3" style="border-style: solid;">
           <h3>Standings: </h3>
           <div style="border=style: solid; text-align: left">
             <ul style=" display: inline">
@@ -152,7 +152,7 @@
         </div>
 
         <!-- Available Players -->
-        <div class="col-xs-6 col-sm-3 col-md-4" style="clear: right;">
+        <div class="col-sm-3" style="clear: right;">
 
           <h3>Available Players</h3>
           <select v-model="inputRole" style="margin: auto auto; display: block">
