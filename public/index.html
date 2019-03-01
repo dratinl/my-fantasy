@@ -23,32 +23,34 @@
         padding-bottom: 8px;
         padding-top: 8px;
         background: #5D2C72;
+        
       }
-      .myheader h1{
+      .headerText{
+        font-family: 'Raleway', sans-serif;
         color: white;
+        padding-bottom: 8px;
         font-size: 24px;
-        font-weight: 600;
+
       }
       .mymaincontent{
+
         height: 100%;
         width: 100%;
         margin: 0 0 0 0;
-        padding: 0 10px 0 10px;
       }
       .mycontainer{
         width: 100%;
-        margin-right: 0;
-        margin-left: 0;
-        padding-right: 0;
-        padding-left: 0;
-        background: #f3f3f3;
+        background: #e5e5e5;
         margin-top: 0;
         height: auto;
         min-height: 50px;
+        border-bottom: 1px solid #5e5e5e;
+
+      }
+      .mycontainer h3{
+        padding-top: 10px;
       }
       .mycontent{
-
-        background: white; 
         margin: 0 0 0 0; 
         height: 100%; 
         text-align: left
@@ -60,8 +62,6 @@
         padding-left: 0;
         padding-right: 0;
       }
-      
-
       .SinglePlayerDetails{
         width: 100%;
         background: white;
@@ -74,11 +74,9 @@
         line-height: 2.0;
         height: auto;
         display: inline-block;
-
       }
-
       .PlayerDesc{
-        max-width: 40%;
+        max-width: 35%;
         padding-left: 10px;
         font-weight: 600;
         font-size: 1em;
@@ -90,7 +88,7 @@
         font-size: 12px;
       }
       .PlayerData{
-        padding-right: 5px;
+        margin-right: 20px;
         min-width: 60%;
         float:right;
       }
@@ -99,7 +97,7 @@
         display: inline;
       }
       .ColumnLabel{
-        text-align: center;
+        text-align: left;
         font-size: 10px;
         line-height: 10px;
         color: black;
@@ -107,9 +105,7 @@
         height: 10px;
       }
       .SingleCol{
-        float: left;
-        min-width:40px;
-        margin: 4px 4px 4px 4px;
+        min-width:80px;
         white-space: nowrap;
       }
       .SingleCol*{
@@ -184,15 +180,15 @@
 
   </head>
 
-  <body style="height:100%; width: 100%; display: inline">
+  <body style="height:100%; width: 100%; display: inline; background: white; ">
     <noscript>
       <strong>We're sorry but my-fantasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
 
-    <div id="app1" style="height: 100%; width: 100%; position: relative">
+    <div id="app1" style="height: 100%; width: 100%; position: relative; ">
       <div class="myheader"  >
         <!-- Team selection -->
-        <h1>Who are you?</h1>
+        <div class="headerText">Who are you?</div>
         <select v-model="selectedTeam" id="teamSelector" >
           <option style="display:none" disabled selected> select a team </option>
           <option v-for="team in ffteams" v-bind:value="team.team_name">{{team.name}}</option>
@@ -204,8 +200,8 @@
         <!-- Roster information -->
         <div class="mycol" style="float: left;">
           <!-- Team information -->
-          <div class="mycontainer" style="width: 100%; border-bottom: 3px solid #e8e8e8">
-            <h3>Team {{ selectedTeam }}</h3>
+          <div class="mycontainer" >
+            <h3>{{ selectedTeam }}</h3>
             <select v-model="inputWeek" style="margin: auto auto; display: block; ">
               <option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option>
             </select>
@@ -269,7 +265,7 @@
           </div>
           <div class="mycontent">
             <div v-for="team in ffteams">
-              <div class="SinglePlayerDetails" style="border-bottom: 1px solid #efefef">
+              <div class="SinglePlayerDetails">
                 <div class="PlayerDesc">
                   {{team.team_name}}
                   <div class="PlayerRole">
@@ -277,7 +273,7 @@
                   </div>
                 </div>
                 <div class="PlayerData" >
-                  <div class="SingleCol" style="float: right">
+                  <div class="SingleCol" style="float: right; text-align: left;">
                     <div class="ColumnLabel">Score</div>
                     {{ team.stats.record[inputWeek] }}
                   </div>
