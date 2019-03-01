@@ -2,7 +2,7 @@
         height: 100%;
         width: 100%;
         text-align: center;
-        font-size: 1.2em;
+        font-size: 1em;
         line-height: 1.6;
         font-weight: 400;
         overflow: auto;
@@ -15,9 +15,14 @@
       .myheader{
         width: 100%;
         margin: 0 0 0 0;
-        padding-bottom: 2px;
-        padding-top: 0;
-        background: white;
+        padding-bottom: 8px;
+        padding-top: 8px;
+        background: #5D2C72;
+      }
+      .myheader h1{
+        color: white;
+        font-size: 24px;
+        font-weight: 600;
       }
       .mymaincontent{
         height: 100%;
@@ -41,7 +46,6 @@
         background: white; 
         margin: 0 0 0 0; 
         height: 100%; 
-        solid; 
         text-align: left
       }
       .mycol{
@@ -56,21 +60,23 @@
       .SinglePlayerDetails{
         width: 100%;
         background: white;
-        padding-top: 10px;
+        padding-top: 15px;
         padding-bottom: 5px;
         margin-bottom: 5px;
         vertical-align: top;
         border-bottom: double;
         text-align:left;
-        line-height: auto;
+        line-height: 2.0;
+        height: auto;
         display: inline-block;
 
       }
 
       .PlayerDesc{
+        max-width: 40%;
         padding-left: 10px;
         font-weight: 600;
-        font-size: 1.2em;
+        font-size: 1em;
         float: left;
         width: 40%;       
       }
@@ -80,29 +86,29 @@
       }
       .PlayerData{
         padding-right: 5px;
-        text-align:left;
-        width: 50%;
+        min-width: 60%;
         float:right;
-
       }
       .PlayerData * {
-        text-align: left;
+        text-align: center;
         display: inline;
       }
       .ColumnLabel{
-        text-align: inherit;
+        text-align: center;
         font-size: 10px;
         line-height: 10px;
-        color: #666666;
+        color: black;
         font-weight: normal;
         height: 10px;
       }
       .SingleCol{
-        text-align: inherit;
-        width:auto;
-        margin: 5px 2px 5px 2px;
+        float: left;
+        min-width:40px;
+        margin: 4px 4px 4px 4px;
         white-space: nowrap;
-        line-height: 1.8;
+      }
+      .SingleCol*{
+        text-align:center;
       }</style><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css><title>my-fantasy</title><script>function getScores(){
         if (app1.ffteams.length > 0){
           for (var i=0; i<app1.ffteams.length; i++){
@@ -153,7 +159,7 @@
             symbol.score = score_card
           }
         }  
-      }</script></head><body style="height:100%; width: 100%; display: inline"><noscript><strong>We're sorry but my-fantasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app1 style="height: 100%; width: 100%;"><div class=myheader><h1>Who are you?</h1><select v-model=selectedTeam id=teamSelector><option style=display:none disabled selected>select a team</option><option v-for="team in ffteams" v-bind:value=team.team_name>{{team.name}}</option></select></div><div class=mymaincontent v-show=selectedTeam><div class=mycol style="float: left;"><div class=mycontainer style="width: 100%; border-bottom: 3px solid #e8e8e8"><h3>Team {{ selectedTeam }}</h3><select v-model=inputWeek style="margin: auto auto; display: block;"><option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option></select></div><div v-for="player in players"><div v-show="player.ffteam ===  selectedTeam"><div class=SinglePlayerDetails><div class=PlayerDesc>{{player.lcsteam}} {{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p><p v-else>{{player.role}} Lane</p></div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div></div><div class=PlayerData><div class=SingleCol style="float: right"><div class=ColumnLabel>Score</div>{{ player.score[inputWeek] }}</div></div></div></div></div></div><div class=mycol><div class=mycontainer><h3>Standings:</h3></div><div class=mycontent><div v-for="team in ffteams"><div class=SinglePlayerDetails style="border-bottom: 1px solid #efefef"><div class=PlayerDesc>{{team.team_name}}<div class=PlayerRole><p>{{team.name}}</p></div></div><div class=PlayerData><div class=SingleCol style="float: right"><div class=ColumnLabel>Score</div>{{ team.stats.record[inputWeek] }}</div></div></div></div></div></div><div class=mycol style="clear: right; float: right"><div class=mycontainer><h3>Available Players</h3><select v-model=inputRole style="margin: auto auto; display: block"><option>All</option><option>Top</option><option>Jungler</option><option>Mid</option><option>Bot</option><option>Sup</option></select></div><div v-for="player in players"><div v-if="inputRole === player.role || inputRole === 'All'"><div class=SinglePlayerDetails><div class=PlayerDesc>{{player.lcsteam}} {{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p><p v-else>{{player.role}} Lane</p></div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div></div><div class=PlayerData><div class=SingleCol style="float: right"><div class=ColumnLabel>Score</div>{{ player.score[inputWeek] }}</div></div></div></div></div></div></div></div><script src=https://unpkg.com/vue@2.4.2></script><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js></script><script>var app1 = new Vue({
+      }</script></head><body style="height:100%; width: 100%; display: inline"><noscript><strong>We're sorry but my-fantasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app1 style="height: 100%; width: 100%; position: relative"><div class=myheader><h1>Who are you?</h1><select v-model=selectedTeam id=teamSelector><option style=display:none disabled selected>select a team</option><option v-for="team in ffteams" v-bind:value=team.team_name>{{team.name}}</option></select></div><div class=mymaincontent v-show=selectedTeam><div class=mycol style="float: left;"><div class=mycontainer style="width: 100%; border-bottom: 3px solid #e8e8e8"><h3>Team {{ selectedTeam }}</h3><select v-model=inputWeek style="margin: auto auto; display: block;"><option v-for="n in 9" v-bind:value="n - 1">Week {{n}}</option></select></div><div v-for="player in players"><div v-show="player.ffteam ===  selectedTeam"><div class=SinglePlayerDetails><div class=PlayerDesc>{{player.lcsteam}} {{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p><p v-else>{{player.role}} Lane</p></div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div></div><div class=PlayerData><div class=SingleCol style="text-align: right; float: right"><div class=ColumnLabel>Score</div>{{ player.score[inputWeek] }}</div></div></div></div></div></div><div class=mycol><div class=mycontainer><h3>Standings:</h3></div><div class=mycontent><div v-for="team in ffteams"><div class=SinglePlayerDetails style="border-bottom: 1px solid #efefef"><div class=PlayerDesc>{{team.team_name}}<div class=PlayerRole><p>{{team.name}}</p></div></div><div class=PlayerData><div class=SingleCol style="float: right"><div class=ColumnLabel>Score</div>{{ team.stats.record[inputWeek] }}</div></div></div></div></div></div><div class=mycol style="clear: right; float: right"><div class=mycontainer><h3>Available Players</h3><select v-model=inputRole style="margin: auto auto; display: block"><option>All</option><option>Top</option><option>Jungler</option><option>Mid</option><option>Bot</option><option>Sup</option></select></div><div v-for="player in players"><div v-if="inputRole === player.role || inputRole === 'All'"><div v-if="player.ffteam ==='no one'" class=SinglePlayerDetails><div class=PlayerDesc>{{player.lcsteam}} {{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p><p v-else>{{player.role}} Lane</p></div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div></div><div class=PlayerData><div class=SingleCol style="float: right"><div class=ColumnLabel>Score</div>{{ player.score[inputWeek] }}</div></div></div></div></div></div></div></div><script src=https://unpkg.com/vue@2.4.2></script><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js></script><script src=https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js></script><script>var app1 = new Vue({
         el: '#app1',
         data: {
           players: [],
@@ -164,18 +170,20 @@
           inputRole: 'All'
         },
         beforeCreate: function() {
-          fetch("teams.json") //.then(res => res.text()).then(text=>console.log(text))
+          // Gets data from json files and stores above
+          fetch("teams.json") 
             .then(res => res.json())
             .then(json => {
               this.ffteams = json.ffteams;
             })
-          fetch("players.json") //.then(res => res.text()).then(text=>console.log(text))
+          fetch("players.json") 
             .then(r => r.json())
             .then(json => {
               this.players = json.players;
             })
         },
-      })</script><script>function start(){
+      })</script><script>// Calculates scores after page is loaded
+      function start(){
         document.getElementById("teamSelector").addEventListener("change", doStuff,)
       }
       function doStuff(){
