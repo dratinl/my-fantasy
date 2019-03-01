@@ -76,7 +76,7 @@
         display: inline-block;
       }
       .PlayerDesc{
-        max-width: 35%;
+        max-width: 30%;
         padding-left: 10px;
         font-weight: 600;
         font-size: 1em;
@@ -89,15 +89,16 @@
       }
       .PlayerData{
         margin-right: 20px;
-        min-width: 60%;
-        float:right;
+        min-width: 65%;
+        float: right;
       }
       .PlayerData * {
-        text-align: center;
         display: inline;
       }
       .ColumnLabel{
         text-align: left;
+        margin-left: 1px;
+        margin-right: 1px;
         font-size: 10px;
         line-height: 10px;
         color: black;
@@ -105,7 +106,10 @@
         height: 10px;
       }
       .SingleCol{
+        float:right;
         min-width:80px;
+        margin-left: 2px;
+        margin-right:2px;
         white-space: nowrap;
       }
       .SingleCol*{
@@ -218,38 +222,38 @@
                 </div>
                 <div class="PlayerData">
                   <div class="SingleCol">
-                    <div class="ColumnLabel">KDA </div>
+                    <div class="ColumnLabel">KDA</div>
                     {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
                   </div>
 
                   <div class="SingleCol">
-                    <div class="ColumnLabel">CS </div>
+                    <div class="ColumnLabel">CS</div>
                     {{ player.stats.cs[inputWeek*2] }}
                   </div>
                   <div class="SingleCol">
-                    <div class="ColumnLabel">Gold </div>
+                    <div class="ColumnLabel">Gold</div>
                     {{ player.stats.gold[inputWeek*2] }}k
                   </div>
                 </div>
                 <div class="PlayerData">
                   <div class="SingleCol">
-                    <div class="ColumnLabel">KDA </div>
+                    <div class="ColumnLabel">KDA</div>
                     {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
                   </div>
 
                   <div class="SingleCol">
-                    <div class="ColumnLabel">CS </div>
+                    <div class="ColumnLabel">CS</div>
                     {{ player.stats.cs[inputWeek*2 + 1] }}
                   </div>
                   <div class="SingleCol">
-                    <div class="ColumnLabel">Gold </div>
+                    <div class="ColumnLabel">Gold</div>
                     {{ player.stats.gold[inputWeek*2 + 1] }}k
                   </div>
                 </div>
                 <div class="PlayerData">
-                  <div class="SingleCol" style="text-align: right; float: right">
-                    <div class="ColumnLabel">Score </div>
-                    {{ player.score[inputWeek] }}
+                  <div class="SingleCol" >
+                    <div class="ColumnLabel">Score</div>
+                    <b>{{ player.score[inputWeek] }}</b>
                   </div>
                 </div>
 
@@ -275,7 +279,7 @@
                 <div class="PlayerData" >
                   <div class="SingleCol" style="float: right; text-align: left;">
                     <div class="ColumnLabel">Score</div>
-                    {{ team.stats.record[inputWeek] }}
+                    <b>{{ team.stats.record[inputWeek] }}</b>
                   </div>
                 </div>
               </div>
@@ -308,38 +312,38 @@
                 </div>
                 <div class="PlayerData">
                   <div class="SingleCol">
-                    <div class="ColumnLabel">KDA  </div>
+                    <div class="ColumnLabel">KDA</div>
                     {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
                   </div>
 
                   <div class="SingleCol">
-                    <div class="ColumnLabel">CS </div>
+                    <div class="ColumnLabel">CS</div>
                     {{ player.stats.cs[inputWeek*2] }}
                   </div>
                   <div class="SingleCol"> 
-                    <div class="ColumnLabel">Gold </div>
+                    <div class="ColumnLabel">Gold</div>
                     {{ player.stats.gold[inputWeek*2] }}k
                   </div>
                 </div>
                 <div class="PlayerData">
                   <div class="SingleCol">
-                    <div class="ColumnLabel">KDA </div>
+                    <div class="ColumnLabel">KDA</div>
                     {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
                   </div>
 
                   <div class="SingleCol">
-                    <div class="ColumnLabel">CS </div>
+                    <div class="ColumnLabel">CS</div>
                     {{ player.stats.cs[inputWeek*2 + 1] }}
                   </div>
                   <div class="SingleCol">
-                    <div class="ColumnLabel">Gold </div>
+                    <div class="ColumnLabel">Gold</div>
                     {{ player.stats.gold[inputWeek*2 + 1] }}k
                   </div>
                 </div>
                 <div class="PlayerData" >
-                  <div class="SingleCol" style="float: right">
-                    <div class="ColumnLabel">Score </div>
-                    {{ player.score[inputWeek] }}
+                  <div class="SingleCol">
+                    <div class="ColumnLabel">Score</div>
+                    <b>{{ player.score[inputWeek] }}</b>
                   </div>
                 </div>
 
