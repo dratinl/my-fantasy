@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+import urllib
+import mechanicalsoup
 import itertools
 import requests
 import os
@@ -22,32 +24,10 @@ def get_match_id(page):
 	# Input: Lol Gamepedia Tournament URL Page
 	# Output: All matchhistory pages if available 
 	# Isolates match history links on page
-	chromeOptions = webdriver.ChromeOptions()
-	prefs={"profile.managed_default_content_settings.images": 2, 'disk-cache-size': 4096 }
-	chromeOptions.add_experimental_option("prefs", prefs)
-	chrome_options = Options()  
-	chrome_options.add_argument("--headless") 
-	driver = webdriver.Chrome(chrome_options=chromeOptions)
-	driver.implicitly_wait(15)
-	try: # Obtain data from gamepedia page, exiting with error if page is unreachable
-		driver.set_page_load_timeout(60)
-		driver.get(page)
-		driver.refresh()
-		SCROLL_PAUSE_TIME = 0.1
-		SCROLL_LENGTH = 400
-		page_height = int(driver.execute_script("return document.body.scrollHeight"))
-		scrollPosition = 0
-		while scrollPosition < page_height:
-			scrollPosition += SCROLL_LENGTH
-			driver.execute_script("window.scrollTo(0, " + str(scrollPosition) + ");")
-			time.sleep(SCROLL_PAUSE_TIME)
-		soup = BeautifulSoup(driver.page_source, "lxml")
-		driver.quit()
 
-	except TimeoutException as e:
-		print("Page load Timeout Occured. Quiting !!!")
-		driver.quit()
-
+	req = urllib.request.Request(page, headers={'User-Agent' : "Magic Browser:"})
+	con = urllib.request.urlopen( req )
+	soup = BeautifulSoup(con, "html.parser")
 	temp = soup.select('.mdv-allweeks')
 	matches=[[] for x in range(0,10)]
 	for z in temp:
@@ -72,9 +52,8 @@ def get_match(match_id,x,output):
 	# Isolates relevant stats based on classes and removes unnecesarry strings
 	nogame = None
 	# If match history is unavailable stats are uploaded as N/A. Can be swapped with actual stats manually
-	if "matchhistory" not in match_id:
+	if match_id == 'N/A':
 		output.put((x, nogame))
-
 	else:
 		chromeOptions = webdriver.ChromeOptions()
 		prefs={"profile.managed_default_content_settings.images": 2, 'disk-cache-size': 4096 }
@@ -92,12 +71,11 @@ def get_match(match_id,x,output):
 			SCROLL_LENGTH = 250
 			page_height = int(driver.execute_script("return document.body.scrollHeight"))
 			scrollPosition = 0
-			# Scroll to bottom of page. Driver is designed to wait until window scrolls to bottom to exit driver
+		# Scroll to bottom of page. Driver is designed to wait until window scrolls to bottom to exit driver
 			while scrollPosition < page_height:
 				scrollPosition += SCROLL_LENGTH
 				driver.execute_script("window.scrollTo(0, " + str(scrollPosition) + ");")
 				time.sleep(SCROLL_PAUSE_TIME)
-
 			soup = BeautifulSoup(driver.page_source, "html.parser")
 			driver.quit()
 
@@ -105,9 +83,10 @@ def get_match(match_id,x,output):
 
 			print("Page load Timeout Occured. Quiting !!!")
 			driver.quit()
-		
+
 		# Miscellaneous data magic to get player results and team results
 		player_r =[a for a in (x.select('.binding')for x in soup.select('.classic.player')) if a]
+
 		results = []
 		for a in player_r:
 			for b in a:
@@ -123,8 +102,8 @@ def get_match(match_id,x,output):
 			t_results[count].append(re.findall("\d+", b.get_text()))
 			count+=1
 		output.put((x, [p_results, t_results]))
+		print(f"Finished game {x}")
 
-		print(f"Finished processing game {x}:")
 
 def get_game_stats(season):
 	output = mp.Queue()
@@ -132,6 +111,7 @@ def get_game_stats(season):
 	procs = []
 	results= []
 	count = 0
+	print("---------- Beginning data extraction ----------")
 	for week in lcs_season:
 		for game in week:
 			count+= 1
@@ -142,4 +122,5 @@ def get_game_stats(season):
 			results.append(output.get())
 		proc.join()
 	results = sorted(results, key=itemgetter(0))
+	print("---------- Finished data extraction ----------")
 	return results
