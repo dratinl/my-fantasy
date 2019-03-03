@@ -75,7 +75,7 @@
       }
       .weekTab a{
         cursor: pointer;
-        font-size: calc(8px + 1vw);
+        font-size: calc(6px + 0.9vw);
         padding: 0.5rem 1.5rem;
         color: #33475b;
         transition: background-color 0.2s;
@@ -340,14 +340,14 @@
           <div class="mycontent">
             <div v-for="team in ffteams">
               <div class="SinglePlayerDetails">
-                <div class="PlayerDesc" style="padding-left: 20%;width: 50%">
+                <div class="PlayerDesc" style="vertical-align: top; padding-left: 20%;width: 50%">
                   {{team.team_name}}
                   <div class="PlayerRole">
                     <p>{{team.name}}</p>
                   </div>
                 </div>
                 <div class="PlayerStats" style="width: 50%">
-                  <div class="PlayerData" style="padding-right: 30%; padding-top: 40px">
+                  <div class="PlayerData" style="padding-right: 30%;">
                     <div class="SingleCol">
                       <div class="ColumnLabel">Score</div>
                       <b>{{ team.stats.record[inputWeek] }}</b>
