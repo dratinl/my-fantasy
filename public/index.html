@@ -164,8 +164,7 @@
 
       .SingleCol{
         float:right;
-        min-width:60px;
-        margin: 10px;
+        margin: calc(12px + 1vmax);
         white-space: nowrap;
         text-align: center;
       }
@@ -284,15 +283,15 @@
                   <div class="PlayerData">
                     <div class="SingleCol">
                       <div class="ColumnLabel">Gold</div>
-                      {{ player.stats.gold[inputWeek*2 + 1] }}k
+                      {{ player.stats.gold[inputWeek*2] }}k
                     </div>
                     <div class="SingleCol">
                       <div class="ColumnLabel">CS</div>
-                      {{ player.stats.cs[inputWeek*2 + 1] }}
+                      {{ player.stats.cs[inputWeek*2] }}
                     </div>
                     <div class="SingleCol">
                       <div class="ColumnLabel">KDA</div>
-                      {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
+                      {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
                     </div>  
                   </div>
                   <div class="PlayerData">
@@ -398,15 +397,15 @@
                   <div class="PlayerData">
                     <div class="SingleCol">
                       <div class="ColumnLabel">Gold</div>
-                      {{ player.stats.gold[inputWeek*2 + 1] }}k
+                      {{ player.stats.gold[inputWeek*2] }}k
                     </div>
                     <div class="SingleCol">
                       <div class="ColumnLabel">CS</div>
-                      {{ player.stats.cs[inputWeek*2 + 1] }}
+                      {{ player.stats.cs[inputWeek*2] }}
                     </div>
                     <div class="SingleCol">
                       <div class="ColumnLabel">KDA</div>
-                      {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
+                      {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
                     </div>  
                   </div>
                   <div class="PlayerData">
