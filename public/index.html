@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     
-    <title>my-fantasy</title>
+    <title>Fantasy LCS</title>
     <link href="Stylesheet.css" rel="stylesheet" type="text/css">
     <script>
       function getScores(){
@@ -98,8 +98,8 @@
             <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a>
           </div>
           <!-- Team information -->
-          <div v-for="player in players" v-if='ffteams[selectedTeam-1].stats.roster.includes(player.name)'>
-            <div class="SinglePlayerDetails">
+          <div v-for="player in sortedPlayers" v-if='ffteams[selectedTeam-1].stats.roster.includes(player.name)'>
+            <div class="SinglePlayerDetails" :key="compKey">
               <div class="PlayerDesc">
                 {{player.name}}
                 <div class="PlayerRole">
@@ -143,6 +143,7 @@
                   </div>
                 </div>
               </div>
+              <button type="button" v-on:click="dropPlayer(player.name)">Drop</button>
             </div>
           </div>
         </div>
@@ -205,53 +206,54 @@
               <a v-on:click="inputRole='Support'" v-bind:class="[inputRole === 'Support' ? 'active' : '']">Support</a>
             </div>
           </div>
-          <div v-for="player in players" v-if="inputRole === player.role || inputRole === 'All'">
-            <div v-if="player.ffteam ==='no one'" class="SinglePlayerDetails">
-              <div class="PlayerDesc">
-                {{player.lcsteam}} {{ player.name }}
-                <div class="PlayerRole">
-                  <p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.role}}</p>
-                  <p v-else>{{player.role}} Lane</p>
+          <div v-for="player in sortedPlayers" v-if="inputRole === player.role || inputRole === 'All'" >
+            <div v-if="!teamRosters.includes(player.name)">
+              <div class="SinglePlayerDetails" :key="compKey">
+                <div class="PlayerDesc">
+                  {{ player.name }}
+                  <div class="PlayerRole">
+                    <p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.lcsteam}} {{player.role}}</p>
+                    <p v-else>{{player.lcsteam}} {{player.role}} Lane</p>
+                  </div>
                 </div>
-              </div>
-              <div class="PlayerStats">
-                <div class="PlayerData">
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">Gold</div>
-                    {{ player.stats.gold[inputWeek*2] }}k
+                <div class="PlayerStats">
+                  <div class="PlayerData">
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">Gold</div>
+                      {{ player.stats.gold[inputWeek*2] }}k
+                    </div>
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">CS</div>
+                      {{ player.stats.cs[inputWeek*2] }}
+                    </div>
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">KDA</div>
+                      {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
+                    </div>  
                   </div>
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">CS</div>
-                    {{ player.stats.cs[inputWeek*2] }}
+                  <div class="PlayerData">
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">Gold</div>
+                      {{ player.stats.gold[inputWeek*2 + 1] }}k
+                    </div>
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">CS</div>
+                      {{ player.stats.cs[inputWeek*2 + 1] }}
+                    </div>
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">KDA</div>
+                      {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
+                    </div>  
                   </div>
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">KDA</div>
-                    {{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}
-                  </div>  
-                </div>
-                <div class="PlayerData">
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">Gold</div>
-                    {{ player.stats.gold[inputWeek*2 + 1] }}k
-                  </div>
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">CS</div>
-                    {{ player.stats.cs[inputWeek*2 + 1] }}
-                  </div>
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">KDA</div>
-                    {{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}
-                  </div>  
-                </div>
-                <div class="PlayerData" >
-                  <div class="SingleCol">
-                    <div class="ColumnLabel">Score</div>
-                    <b>{{ player.score[inputWeek] }}</b>
+                  <div class="PlayerData" >
+                    <div class="SingleCol">
+                      <div class="ColumnLabel">Score</div>
+                      <b>{{ player.score[inputWeek] }}</b>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -272,24 +274,55 @@
           selectedTeam: null,
           activeTab: 1,
           inputWeek: 0,
-          inputRole: 'All'
+          inputRole: 'All',
+          compKey : 0
         },
         computed: {
+          teamRosters: function(){
+            var teamR = []
+            for (var x=0; x < this.ffteams.length; x++){
+              for (var y=0; y < this.ffteams[x].stats.roster.length; y++){
+                teamR.push(this.ffteams[x].stats.roster[y])
+              }
+            }
+            return teamR
+          },
+          sortedPlayers: function(){
+            function compare2(a,b){
+              if (parseFloat(a.score[app1.inputWeek]) > parseFloat(b.score[app1.inputWeek]))
+                return -1;
+              if (parseFloat(a.score[app1.inputWeek]) < parseFloat(b.score[app1.inputWeek]))
+                return 1;
+              return 0;
+            }
+            return this.players.sort(compare2)
+          },
           sortedTeams: function() {
             function compare(a,b){
-              console.log(a.team_name + ' ' + a.stats.record[app1.inputWeek])
-              console.log(b.team_name + ' ' + b.stats.record[app1.inputWeek])
-
               if (parseFloat(a.stats.record[app1.inputWeek]) > parseFloat(b.stats.record[app1.inputWeek])){
                 return -1;
               }
               if (parseFloat(a.stats.record[app1.inputWeek]) < parseFloat(b.stats.record[app1.inputWeek])){
                 return 1;
               }
-
+              return 0;
             }
             return this.ffteams.sort(compare)
           }
+        },
+        methods: {
+          dropPlayer: function(p){
+            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(p.toString()))
+              this.ffteams[app1.selectedTeam - 1].stats.roster[this.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p.toString())] = null;
+              this.compKey += 1;
+          },
+          addPlayer: function(p){
+            this.ffteams[app1.selectedTeam - 1].stats.roster[indexOf(null)] = p;
+          },
+          swapRoster: function(a, b){
+            if (app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p))
+              app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p) = b;
+          },
         },
         beforeCreate: function() {
           // Gets data from json files and stores above
@@ -306,7 +339,6 @@
         },
       })
     </script>
-
     <script>
       // Calculates scores after page is loaded
       function start(){
