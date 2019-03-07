@@ -1,27 +1,42 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css><title>Fantasy LCS</title><link href=scripts/Stylesheet.css rel=stylesheet type=text/css></head><body><noscript><strong>We're sorry but my-fantasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app1><div class=myheader><div v-if=!selectedTeam><div class=headerText>Who are you?</div><select v-model=selectedTeam id=teamSelector style="margin-bottom: 8px"><option style=display:none disabled selected>select a team</option><option v-for="team in ffteams" v-bind:value=ffteams.indexOf(team)+1>{{team.name}}</option></select></div><div v-else><div class=headerText>{{ffteams[selectedTeam-1].team_name}}</div><div class=mytabs><a v-on:click="activeTab=1" v-bind:class="[activeTab === 1 ? 'active' : '' ]">Roster</a> <a v-on:click="activeTab=2" v-bind:class="[activeTab === 2 ? 'active' : '' ]">Standings</a> <a v-on:click="activeTab=3" v-bind:class="[activeTab === 3 ? 'active' : '' ]">Free Agency</a></div></div></div><div :key=compKey><div class=mymaincontent v-if=selectedTeam><div v-if="activeTab === 1" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div v-for="player in sortedPlayers" v-if=ffteams[selectedTeam-1].stats.roster.includes(player.name)><div class=SinglePlayerDetails><div class=PlayerDesc>{{player.name}}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.lcsteam}} {{player.role}}</p><p v-else>{{player.lcsteam}} {{player.role}} Lane</p></div></div><div class=PlayerStats><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ player.score[inputWeek] }}</b></div></div></div><button type=button v-on:click=dropPlayer(player.name)>Drop</button></div></div></div><div v-if="activeTab === 2" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div class=mycontent><div v-for="team in sortedTeams"><div class=SinglePlayerDetails><div class=PlayerDesc style="vertical-align: top; padding-left: 20%;width: 50%">{{team.team_name}}<div class=PlayerRole><p>{{team.name}}</p></div></div><div class=PlayerStats style="width: 50%"><div class=PlayerData style="padding-right: 30%;"><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ team.stats.record[inputWeek] }}</b></div></div></div></div></div></div></div><div v-if="activeTab === 3" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div class=mycontainer style=position:relative><div class=positionTab><a v-on:click="inputRole='All'" v-bind:class="[inputRole === 'All' ? 'active' : '']">All</a> <a v-on:click="inputRole='Top'" v-bind:class="[inputRole === 'Top' ? 'active' : '']">Top</a> <a v-on:click="inputRole='Jungler'" v-bind:class="[inputRole === 'Jungler' ? 'active' : '']">Jungler</a> <a v-on:click="inputRole='Mid'" v-bind:class="[inputRole === 'Mid' ? 'active' : '']">Mid</a> <a v-on:click="inputRole='Bot'" v-bind:class="[inputRole === 'Bot' ? 'active' : '']">Bot</a> <a v-on:click="inputRole='Support'" v-bind:class="[inputRole === 'Support' ? 'active' : '']">Support</a></div></div><div v-for="player in sortedPlayers" v-if="(inputRole === player.role || inputRole === 'All') && !teamRosters.includes(player.name)"><div class=SinglePlayerDetails><div class=PlayerDesc>{{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.lcsteam}} {{player.role}}</p><p v-else>{{player.lcsteam}} {{player.role}} Lane</p></div></div><div class=PlayerStats><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ player.score[inputWeek] }}</b></div></div></div><button type=button v-on:click=addPlayer(player.name)>Add</button></div></div></div></div></div></div><script src=https://unpkg.com/vue@2.4.2></script><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js></script><script src=scripts/mymain.js></script><script>var app1 = new Vue({
+<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css><title>Fantasy LCS</title><link href=/scripts/Stylesheet.css rel=stylesheet type=text/css></head><body><noscript><strong>We're sorry but my-fantasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app1><div class=myheader v-if=loaded><div v-if=!selectedTeam><div class=headerText>Who are you?</div><select v-model=selectedTeam v-if=loaded id=teamSelector style="margin-bottom: 8px"><option style=display:none disabled selected>select a team</option><option v-for="team in ffteams" v-bind:value=ffteams.indexOf(team)+1>{{team.name}}</option></select></div><div v-else><div class=headerText>{{ffteams[selectedTeam-1].team_name}}</div><div class=mytabs><a v-on:click="activeTab=1" v-bind:class="[activeTab === 1 ? 'active' : '' ]">Roster</a> <a v-on:click="activeTab=2" v-bind:class="[activeTab === 2 ? 'active' : '' ]">Standings</a> <a v-on:click="activeTab=3" v-bind:class="[activeTab === 3 ? 'active' : '' ]">Free Agency</a></div></div></div><div :key=compKey v-if=loaded><div class=mymaincontent v-if=selectedTeam><div v-if="activeTab === 1" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div v-for="player in sortedPlayers" v-if=ffteams[selectedTeam-1].stats.roster.includes(player.name)><div class=SinglePlayerDetails><div class=PlayerDesc>{{player.name}}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.lcsteam}} {{player.role}}</p><p v-else>{{player.lcsteam}} {{player.role}} Lane</p></div></div><div class=PlayerStats><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ player.score[inputWeek] }}</b></div></div></div><button type=button v-on:click=dropPlayer(player.name)>Drop</button></div></div></div><div v-if="activeTab === 2" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div class=mycontent><div v-for="team in sortedTeams"><div class=SinglePlayerDetails><div class=PlayerDesc style="vertical-align: top; padding-left: 20%;width: 50%">{{team.team_name}}<div class=PlayerRole><p>{{team.name}}</p></div></div><div class=PlayerStats style="width: 50%"><div class=PlayerData style="padding-right: 30%;"><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ team.stats.record[inputWeek] }}</b></div></div></div></div></div></div></div><div v-if="activeTab === 3" class=mycol><div class=weekTab><a v-on:click="inputWeek=0" v-bind:class="[inputWeek === 0 ? 'active' : '' ]">1</a> <a v-on:click="inputWeek=1" v-bind:class="[inputWeek === 1 ? 'active' : '' ]">2</a> <a v-on:click="inputWeek=2" v-bind:class="[inputWeek === 2 ? 'active' : '' ]">3</a> <a v-on:click="inputWeek=3" v-bind:class="[inputWeek === 3 ? 'active' : '' ]">4</a> <a v-on:click="inputWeek=4" v-bind:class="[inputWeek === 4 ? 'active' : '' ]">5</a> <a v-on:click="inputWeek=5" v-bind:class="[inputWeek === 5 ? 'active' : '' ]">6</a> <a v-on:click="inputWeek=6" v-bind:class="[inputWeek === 6 ? 'active' : '' ]">7</a> <a v-on:click="inputWeek=7" v-bind:class="[inputWeek === 7 ? 'active' : '' ]">8</a> <a v-on:click="inputWeek=8" v-bind:class="[inputWeek === 8 ? 'active' : '' ]">9</a></div><div class=mycontainer style=position:relative><div class=positionTab><a v-on:click="inputRole='All'" v-bind:class="[inputRole === 'All' ? 'active' : '']">All</a> <a v-on:click="inputRole='Top'" v-bind:class="[inputRole === 'Top' ? 'active' : '']">Top</a> <a v-on:click="inputRole='Jungler'" v-bind:class="[inputRole === 'Jungler' ? 'active' : '']">Jungler</a> <a v-on:click="inputRole='Mid'" v-bind:class="[inputRole === 'Mid' ? 'active' : '']">Mid</a> <a v-on:click="inputRole='Bot'" v-bind:class="[inputRole === 'Bot' ? 'active' : '']">Bot</a> <a v-on:click="inputRole='Support'" v-bind:class="[inputRole === 'Support' ? 'active' : '']">Support</a></div></div><div v-for="player in sortedPlayers" v-if="(inputRole === player.role || inputRole === 'All') && !teamRosters.includes(player.name)"><div class=SinglePlayerDetails><div class=PlayerDesc>{{ player.name }}<div class=PlayerRole><p v-if="player.role === 'Jungler' || player.role === 'Coach' || player.role === 'Support'">{{player.lcsteam}} {{player.role}}</p><p v-else>{{player.lcsteam}} {{player.role}} Lane</p></div></div><div class=PlayerStats><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2] }}/{{ player.stats.deaths[inputWeek*2] }}/{{ player.stats.assists[inputWeek*2] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Gold</div>{{ player.stats.gold[inputWeek*2 + 1] }}k</div><div class=SingleCol><div class=ColumnLabel>CS</div>{{ player.stats.cs[inputWeek*2 + 1] }}</div><div class=SingleCol><div class=ColumnLabel>KDA</div>{{ player.stats.kills[inputWeek*2 + 1] }}/{{ player.stats.deaths[inputWeek*2 + 1] }}/{{ player.stats.assists[inputWeek*2 + 1] }}</div></div><div class=PlayerData><div class=SingleCol><div class=ColumnLabel>Score</div><b>{{ player.score[inputWeek] }}</b></div></div></div><button type=button v-on:click=addPlayer(player.name)>Add</button></div></div></div></div></div></div><script src=https://unpkg.com/vue@2.4.2></script><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js></script><script src=/scripts/mymain.js></script><script src=https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js></script><script src=https://www.gstatic.com/firebasejs/5.8.5/firebase-auth.js></script><script src=https://www.gstatic.com/firebasejs/5.8.5/firebase-database.js></script><script>// Initialize Firebase</script><script>var config = {
+        apiKey: "AIzaSyCrFcd07p__XHITl41s3GMLOOTwHa3WZ2M",
+        authDomain: "rafu-25049.firebaseapp.com",
+        databaseURL: "https://rafu-25049.firebaseio.com",
+        projectId: "rafu-25049",
+      };
+      firebase.initializeApp(config);
+
+      var app1 = new Vue({
         el: '#app1',
         data: {
-          players: [],
-          ffteams: [],
+          loaded: false,
+          players: null,
+          ffteams: null,
           ff_scores: [],
           selectedTeam: null,
           activeTab: 1,
           inputWeek: 0,
           inputRole: 'All',
           compKey : 0,
-          timRosters: [],
+        },
+        mounted() {
+          var pb = firebase.database().ref('players');
+          var tb = firebase.database().ref('ffteams')
+          pb.on("value", function(snapshot){
+            app1.players = snapshot.val();
+          }, function(error){
+            console.log("Error: " + error.code);
+          });
+          tb.on("value", function(snapshot){
+            app1.ffteams = snapshot.val();
+          }, function(error){
+            console.log("Error: " + error.code);
+          });
+          this.loaded=true;
         },
         computed: {
           teamRosters: function(){
             var teamR = []
-            if (localStorage.getItem('ffteams')) {
-              try {
-                this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-              } catch(e){
-                localStorage.removeItem('ffteams');
-              }
-            }
             for (var x=0; x < this.ffteams.length; x++){
               for (var y=0; y < this.ffteams[x].stats.roster.length; y++){
                 teamR.push(this.ffteams[x].stats.roster[y])
@@ -56,77 +71,37 @@
             return ssteams.sort(compare)
           }
         },
-        mounted() {
-          if (localStorage.getItem('ffteams')) {
-            try {
-              this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-            } catch(e){
-              localStorage.removeItem('ffteams');
-            }
-          }else{
-            fetch("teams.json") 
-            .then(res => res.json())
-            .then(json => {
-              this.ffteams = json.ffteams;
-            })
-          }
-        },
         methods: {
-          forceTeam: function() {
-            var teamR = [];
-            if (localStorage.getItem('ffteams')) {
-              try {
-                this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-              } catch(e){
-                localStorage.removeItem('ffteams');
-              }
-            }
-            for (var x=0; x < this.ffteams.length; x++){
-              for (var y=0; y < this.ffteams[x].stats.roster.length; y++){
-                teamR.push(this.ffteams[x].stats.roster[y])
-              }
-            }
-            this.timRosters = teamR;
-          },
-          forceRerender: function() {
-            this.compKey +=1;
-            this.otherKey +=1;
-            this.forceTeam();
-          },
-          saveRoster: function() {
-            const parsed = JSON.stringify(this.ffteams);
-            localStorage.setItem('ffteams', parsed);
-            this.forceRerender();
-          },
           dropPlayer: function(p){
-            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(p.toString()))
-              this.ffteams[app1.selectedTeam - 1].stats.roster[this.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p.toString())] = null;
-
-            this.saveRoster();
+          
+            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(p.toString())){
+              var updates = {};
+              var pKey = app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p.toString())
+              updates['/ffteams/' + (app1.selectedTeam-1) + '/stats/roster/' + pKey ] = '';
+              this.compKey +=1;
+              return firebase.database().ref().update(updates)
+            }
+            else{
+              alert("Player is not on your team")
+            }
           },  
           addPlayer: function(p){
-            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(null)){
-              this.ffteams[app1.selectedTeam - 1].stats.roster[this.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(null)] = p.toString();
-            
+
+            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes('')){
+              var updates = {};
+              var pKey = app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf('')
+              updates['/ffteams/' + (app1.selectedTeam-1) + '/stats/roster/' + pKey] = p.toString();
+              this.compKey +=1;
+              return firebase.database().ref().update(updates)
             }else{
               alert("You don't have an empty spot")
             }
-            this.saveRoster();
+            
+            
           },
           swapRoster: function(a, b){
             if (app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p))
               app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p) = b;
           },
-        },
-        beforeCreate: function() {
-          // Gets data from json files and stores above
-          
-          fetch("players.json") 
-            .then(r => r.json())
-            .then(json => {
-              this.players = json.players;
-            })
-        },
+        }
       })</script><script>start();</script></script></body></html>

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <title>Fantasy LCS</title>
     <link href="/scripts/Stylesheet.css" rel="stylesheet" type="text/css">
+    
   </head>
 
   <body>
@@ -14,11 +15,11 @@
     </noscript>
 
     <div id="app1">
-      <div class="myheader"  >
+      <div class="myheader" v-if="loaded" >
         <!-- Team selection -->
         <div v-if="!selectedTeam">
           <div class="headerText">Who are you?</div>
-          <select v-model="selectedTeam" id="teamSelector" style="margin-bottom: 8px">
+          <select v-model="selectedTeam" v-if="loaded" id="teamSelector" style="margin-bottom: 8px">
             <option style="display:none" disabled selected> select a team </option>
             <option v-for="team in ffteams" v-bind:value="ffteams.indexOf(team)+1">{{team.name}}</option>
           </select>
@@ -33,7 +34,7 @@
         </div>
 
       </div>
-      <div :key="compKey">
+      <div :key="compKey" v-if="loaded">
         <div class="mymaincontent" v-if="selectedTeam" >
           
 
@@ -219,32 +220,58 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/scripts/mymain.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-database.js"></script>
+
     <!-- Vue.js app js -->
+    <script>
+      // Initialize Firebase
+      
+
+    </script>
     <script type="text/javascript">
+
+      
+      var config = {
+        apiKey: "AIzaSyCrFcd07p__XHITl41s3GMLOOTwHa3WZ2M",
+        authDomain: "rafu-25049.firebaseapp.com",
+        databaseURL: "https://rafu-25049.firebaseio.com",
+        projectId: "rafu-25049",
+      };
+      firebase.initializeApp(config);
+
       var app1 = new Vue({
         el: '#app1',
         data: {
-          players: [],
-          ffteams: [],
+          loaded: false,
+          players: null,
+          ffteams: null,
           ff_scores: [],
           selectedTeam: null,
           activeTab: 1,
           inputWeek: 0,
           inputRole: 'All',
           compKey : 0,
-          timRosters: [],
+        },
+        mounted() {
+          var pb = firebase.database().ref('players');
+          var tb = firebase.database().ref('ffteams')
+          pb.on("value", function(snapshot){
+            app1.players = snapshot.val();
+          }, function(error){
+            console.log("Error: " + error.code);
+          });
+          tb.on("value", function(snapshot){
+            app1.ffteams = snapshot.val();
+          }, function(error){
+            console.log("Error: " + error.code);
+          });
+          this.loaded=true;
         },
         computed: {
           teamRosters: function(){
             var teamR = []
-            if (localStorage.getItem('ffteams')) {
-              try {
-                this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-              } catch(e){
-                localStorage.removeItem('ffteams');
-              }
-            }
             for (var x=0; x < this.ffteams.length; x++){
               for (var y=0; y < this.ffteams[x].stats.roster.length; y++){
                 teamR.push(this.ffteams[x].stats.roster[y])
@@ -279,84 +306,45 @@
             return ssteams.sort(compare)
           }
         },
-        mounted() {
-          if (localStorage.getItem('ffteams')) {
-            try {
-              this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-            } catch(e){
-              localStorage.removeItem('ffteams');
-            }
-          }else{
-            fetch("/teams.json") 
-            .then(res => res.json())
-            .then(json => {
-              this.ffteams = json.ffteams;
-            })
-          }
-        },
         methods: {
-          forceTeam: function() {
-            var teamR = [];
-            if (localStorage.getItem('ffteams')) {
-              try {
-                this.ffteams = JSON.parse(localStorage.getItem('ffteams'));
-
-              } catch(e){
-                localStorage.removeItem('ffteams');
-              }
-            }
-            for (var x=0; x < this.ffteams.length; x++){
-              for (var y=0; y < this.ffteams[x].stats.roster.length; y++){
-                teamR.push(this.ffteams[x].stats.roster[y])
-              }
-            }
-            this.timRosters = teamR;
-          },
-          forceRerender: function() {
-            this.compKey +=1;
-            this.otherKey +=1;
-            this.forceTeam();
-          },
-          saveRoster: function() {
-            const parsed = JSON.stringify(this.ffteams);
-            localStorage.setItem('ffteams', parsed);
-            this.forceRerender();
-          },
           dropPlayer: function(p){
-            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(p.toString()))
-              this.ffteams[app1.selectedTeam - 1].stats.roster[this.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p.toString())] = null;
-
-            this.saveRoster();
+          
+            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(p.toString())){
+              var updates = {};
+              var pKey = app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p.toString())
+              updates['/ffteams/' + (app1.selectedTeam-1) + '/stats/roster/' + pKey ] = '';
+              this.compKey +=1;
+              return firebase.database().ref().update(updates)
+            }
+            else{
+              alert("Player is not on your team")
+            }
           },  
           addPlayer: function(p){
-            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes(null)){
-              this.ffteams[app1.selectedTeam - 1].stats.roster[this.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(null)] = p.toString();
-            
+
+            if (this.ffteams[app1.selectedTeam - 1].stats.roster.includes('')){
+              var updates = {};
+              var pKey = app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf('')
+              updates['/ffteams/' + (app1.selectedTeam-1) + '/stats/roster/' + pKey] = p.toString();
+              this.compKey +=1;
+              return firebase.database().ref().update(updates)
             }else{
               alert("You don't have an empty spot")
             }
-            this.saveRoster();
+            
+            
           },
           swapRoster: function(a, b){
             if (app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p))
               app1.ffteams[app1.selectedTeam - 1].stats.roster.indexOf(p) = b;
           },
-        },
-        beforeCreate: function() {
-          // Gets data from json files and stores above
-          
-          fetch("/players.json") 
-            .then(r => r.json())
-            .then(json => {
-              this.players = json.players;
-            })
-        },
+        }
       })
     </script>
     <script type="text/javascript">
       start();
     </script>
+    
   </body>
 
 </html>
